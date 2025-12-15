@@ -21,6 +21,7 @@ This repository aims to bring together a series of explorations and practices ce
 ## 🎉 News
 
 - **Dec 15, 2025:** 🔥 We released the **QwenLong-L1.5** project! It provides a complete post-training recipe for long-context reasoning and memory management. The corresponding model and technical report have also been released.
+- **Dec 15, 2025:** 🔥 We released the code implementation of **SPELL**, which is a self-play reinforcement learning framework designed to improve long-context reasoning abilities in LLMs.
 - **May 28, 2025:** 🔥 The **QwenLong-L1** project released `QwenLong-L1-32B-AWQ`, a version processed with AWQ int4 quantization.
 - **May 26, 2025:** 🔥 We officially open-sourced the **QwenLong-L1** project, the industry's first large model trained for long-context reasoning using reinforcement learning. We also released the accompanying `QwenLong-L1-32B` model and the `DocQA-RL-1.6K` training dataset.
 
@@ -35,6 +36,11 @@ This repository currently includes the following projects:
 ### 2. [QwenLong-L1.5](./QwenLong-L1.5)
 
 - **Description:** A complete "Post-Training Recipe" for long-context reasoning and memory management. This project features three core contributions: a synthesis pipeline for generating complex reasoning data, the Adaptive Entropy-Controlled Policy Optimization (AEPO) algorithm optimized for long-context training, and a memory management framework that extends operation beyond the model's physical context window. Based on this recipe, we introduce the **QwenLong-L1.5-30B-A3B** model.
+
+### 3. [SPELL](./SPELL)
+
+- **Description:** A self-play reinforcement learning framework designed to improve long-context reasoning abilities in LLMs. SPELL cycles a single LLM through three roles—questioner, responder, and verifier—to autonomously generate training data and rewards, without requiring external supervision. Extensive experiments across 12 models and 6 benchmarks demonstrate consistent improvements. Notably, SPELL provides a potential path for elevating the performance ceiling of models surpassing human performance.
+
 
 ## ⭐ Star History
 
@@ -58,5 +64,14 @@ If you find our work helpful in your research, please consider citing our papers
   title={QwenLong-L1.5: Post-Training Recipe for Long-Context Reasoning and Memory Management},
   author={Weizhou Shen, Ziyi Yang, Chenliang Li, Zhiyuan Lu, Miao Peng, Huashan Sun, Yingcheng Shi, Shengyi Liao, Shaopeng Lai, Bo Zhang, Dayiheng Liu, Fei Huang, Jingren Zhou, Ming Yan},
   year={2025}
+}
+```
+
+```bibtex
+@article{yang2025spell,
+    title={SPELL: Self-Play Reinforcement Learning for evolving Long-Context Language Models},
+    author={Ziyi Yang, Weizhou Shen, Ruijun Chen, Chenliang Li, Fanqi Wan, Ming Yan, Xiaojun Quan, Fei Huang},
+    journal={arXiv preprint arXiv:2509.23863},
+    year={2025}
 }
 ```

@@ -1,0 +1,80 @@
+hydra:
+  searchpath:
+    - file://verl/trainer/config
+
+defaults:
+  - ppo_trainer
+  - _self_
+
+# dataset config
+data:
+
+  n_docs: 
+    docmath: [5] # Number of documents for curating new questions for questioner
+    ultrafineweb: [5]
+
+  use_cache: 
+    enable: False # whether to cache history questions
+    cached_lower: 0.01 # the min of avg@n to cache
+    cached_higher: 1.0 # the max of avg@n to cache
+    cache_size: 3 # the size of each cached data points
+
+  tasks: 
+    docmath: ['doc_general_qa','docmath_qa','doc_mc'] # define your task here
+    ultrafineweb: ['doc_general_qa','docmath_qa','doc_mc']
+
+  questioner_bad_case_ratio: 0 # whether to add bad case to the questioner
+
+  questioner_prompt_reuse: False # whether to cache the questioner samples chunked by dynamic sampling
+
+  filter_questioner_prompts: False # Whether to filter out questioner prompts (no text) before responder gen
+
+actor_rollout_ref:
+  actor:
+    num_mini_batches: 1 # default to one
+
+# custom reward function definition
+custom_reward_function:
+
+  overlong_buffer: 
+    enable: False # We try to avoid forgetting to set enable
+    len: 0
+    penalty_factor: 0.0
+    log: False
+
+# config for the algorithm
+algorithm:
+
+  self_verification: 
+    enable: False # whether to perform self-verification
+    tasks: [ 'doc_general_qa', 'docmath_qa' ] 
+    update: False
+    update_ratio: 0.125 # the ratio to responder
+    update_lower_bound: 0.51
+    update_upper_bound: 0.99
+    reward_type: mean # can be mean or most
+    label_type: maj_cons  # can be maj_cons or maj
+    n: 1 # rollout n for verifier
+    
+  reward_combined_function: max # to determine the final reward combined llm judge and rule-based
+
+  questioner:
+    update: True # Whether to update the questioner
+    group: batch # whether to do z-score norm
+    reward_type: gaussian 
+    # bad_case_reward: -1.0 # penalty for bad case
+
+  filter_groups:
+    enable: False # We try to avoid forgetting to set enable
+    metric: null # acc / score / seq_reward / seq_final_reward / ...
+    max_num_gen_batches: 10 # Non-positive values mean no upper limit
+    filter_by_mean: False
+    mean_upper_bound: 1.0
+    mean_lower_bound: 0.0
+
+  # domain sampling config
+  domain_sampling:
+    enable: True
+    update_weights: False
+    init_weights: [1,1,1] # initial weights for different tasks
+    init_weight_method: average  # weight sampling method for each domain
