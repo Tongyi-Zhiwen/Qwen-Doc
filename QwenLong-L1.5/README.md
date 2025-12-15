@@ -60,6 +60,10 @@ Third, to handle tasks exceeding the model's physical window, we introduce a **m
 
 Our comprehensive evaluation on leading long-context benchmarks shows that **QwenLong-L1.5 surpasses its Qwen3-30B-A3B-Thinking baseline by an average of 9.9 points, achieving performance comparable to top-tier models like GPT-5 and Gemini-2.5-Pro**. Crucially, these enhancements also translate to significant gains in general domains like mathematics, tool-use, and long-dialogue scenarios, demonstrating that strong long-context ability provides a foundational boost to a model's overall reasoning capabilities.
 
+<p align="center">
+    <img src="./assets/fig4.png" width="100%"> <br>
+</p>
+
 
 ## 🛠️ Requirements
 

@@ -2,3 +2,4 @@ openai
 torch==2.6.0
 transformers==4.57.3
 vllm==0.8.5.post1
+modelscope
