@@ -148,9 +148,220 @@ print("content:", content)
 ```
 
 
-## 💻 Implementation of Task-balances Sampling, Task-specific Advantage Estimation and AEPO
+## 💻 Implementation of Task-balanced Sampling, Task-specific Advantage Estimation and AEPO
 
-*Coming soon...*
+### Task-balanced Sampling
+
+In the policy rollout stage, the task-balanced sampler draws an equal number of samples from each task for every training batch, ensuring a balanced task distribution within a single policy update. The implementation of the sampler is provided below (refer to [RuleReasoner](https://github.com/bigai-nlco/RuleReasoner/blob/d087e84c731a29377aa5b533b98dbaae31b11804/verl/verl/utils/dataset/rl_dataset.py#L555)):
+
+```python
+class DomainSampler:
+    """A batch sampler that ensures each batch has the correct domain proportions."""
+
+    def __init__(
+        self,
+        dataset: DomainWeightedRLHFDataset,
+        batch_size: int,
+        domain_weights: Optional[Dict[str, float]] = None,
+    ):
+        """
+        Initialize a domain sampler.
+
+        Args:
+            dataset: The dataset to sample from
+            batch_size: Size of each batch
+        """
+        self.dataset = dataset
+        self.batch_size = batch_size
+        self.domain_weights = domain_weights
+        self.domains = list(domain_weights.keys())
+
+        # Create domain indices mapping
+        self.domain_indices = {domain: [] for domain in self.domains}
+        for i, (domain, _) in enumerate(dataset.index_mapping):
+            self.domain_indices[domain].append(i)
+
+        # For each domain, create a shuffled list of indices
+        self.domain_iterators = {domain: [] for domain in self.domains}
+        for domain in self.domains:
+            self._refill_domain_indices(domain)
+
+        self.count_weight()
+
+    def domain_weights(self) -> Dict[str, float]:
+        """Return the current domain weights."""
+        return self.domain_weights
+
+    def count_weight(self):
+        self.domain_counts = {}
+        remaining = self.batch_size
+        for domain, weight in self.domain_weights.items():
+            count = int(self.batch_size * weight)
+            if count > len(self.domain_indices[domain]):
+                count = len(self.domain_indices[domain])
+                print(f"Warning: domain {domain} doesn't have enough data points to take.")
+            self.domain_counts[domain] = count
+            remaining -= count
+        sorted_domains = sorted(
+            self.domains, key=lambda d: self.domain_weights[d], reverse=True
+        )
+        while remaining > 0:
+            for domain in sorted_domains:
+                if remaining > 0:
+                    if len(self.domain_indices[domain]) > self.domain_counts[domain]:
+                        self.domain_counts[domain] += 1
+                        remaining -= 1
+                else:
+                    break
+
+    def _refill_domain_indices(self, domain: str) -> None:
+        """Refill indices for a specific domain."""
+        indices = self.domain_indices[domain].copy()
+        random.shuffle(indices)
+        self.domain_iterators[domain] = indices
+
+    def __len__(self):
+        """Return the total number of batches."""
+        return len(self.dataset) // self.batch_size
+
+    def __iter__(self):
+        """Yield batches of indices that respect domain weights."""
+        while True:
+            batch_indices = []
+
+            # For each domain, select the required number of indices
+            for domain, count in self.domain_counts.items():
+                # Skip if the domain has no data
+                if not self.domain_indices[domain]:
+                    continue
+
+                # Ensure we have enough indices
+                if len(self.domain_iterators[domain]) < count:
+                    self._refill_domain_indices(domain)
+
+                # Get at most count indices (in case domain has fewer samples than needed)
+                to_take = min(count, len(self.domain_iterators[domain]))
+                domain_batch_indices = self.domain_iterators[domain][:to_take]
+                self.domain_iterators[domain] = self.domain_iterators[domain][to_take:]
+                batch_indices.extend(domain_batch_indices)
+
+            # Shuffle the batch indices
+            random.shuffle(batch_indices)
+            yield batch_indices
+```
+
+and replace the data loader in your trainer with
+
+```python
+domains = dataset.domains
+# default to average initialization
+domain_weights = {
+    domain: 1.0 / len(domains) for domain in domains
+}
+
+domain_sampler = DomainSampler(
+    dataset=dataset,
+    batch_size=data_config.gen_batch_size,
+    domain_weights=domain_weights
+)
+
+self.train_dataloader = StatefulDataLoader(
+    dataset=self.train_dataset,
+    batch_sampler=domain_sampler,
+    num_workers=0,
+    collate_fn=collate_fn,
+)
+```
+
+### Task-specific Advantage Estimation
+
+We adopt a task-aware approach to compute the reward standard deviation when estimating advantage. Specifically, for the $i$-th response of the policy model, we modify the group-level standard deviation to the standard deviation of rewards from all samples belonging to the same task within the current training batch $\mathcal{B}^{\text{task}}$:
+
+
+$$A_{i}^{\text{task}} = \frac{r_{i}^{\text{task}} - \text{mean}(\{r_{k}^{\text{task}}\}_{k=1}^{G})}{\textcolor{red}{\text{std}(r^{\text{task}} | r^{\text{task}} \in \mathcal{B}^{\text{task}})}}, \quad \text{task} \in \{\text{mc, qa, niah, ...}\}$$
+
+
+```python
+def compute_grpo_task_norm_outcome_advantage(
+    token_level_rewards: torch.Tensor,
+    response_mask: torch.Tensor,
+    data_source: np.ndarray,
+    index: np.ndarray,
+    epsilon: float = 1e-6,
+    norm_adv_by_std_in_grpo: str = True
+):
+    scores = token_level_rewards.sum(dim=-1)
+
+    id2score = defaultdict(list)
+    task2score = defaultdict(list)
+    task2std = {}
+    id2mean = {}
+
+    with torch.no_grad():
+        bsz = scores.shape[0]
+        for i in range(bsz):
+            id2score[index[i]].append(scores[i])
+            task2score[data_source[i]].append(scores[i])
+        for task in task2score:
+            if len(task2score[task]) == 1:
+                task2std[task] = torch.tensor(0.0)
+            else:
+                task2std[task] = torch.std(torch.tensor([task2score[task]]))
+        for idx in id2score:
+            if len(id2score[idx]) == 1:
+                id2mean[idx] = torch.tensor(0.0)
+            elif len(id2score[idx]) > 1:
+                id2mean[idx] = torch.mean(torch.tensor(id2score[idx]))
+            else:
+                raise ValueError(f"no score in prompt index: {idx}")
+        for i in range(bsz):
+            if norm_adv_by_std_in_grpo:
+                scores[i] = (scores[i] - id2mean[index[i]]) / (task2std[data_source[i]] + epsilon)
+            else:
+                scores[i] = scores[i] - id2mean[index[i]]
+        scores = scores.unsqueeze(-1) * response_mask
+
+    return scores, scores
+```
+
+### AEPO
+
+Adaptive entropy-controlled policy optimization (AEPO) algorithm maintains an optimal balance between exploration (increase entropy, with negative gradient) and exploitation (decrease entropy, without negative gradient), enabling scaling RL training to a larger number of steps without degradation. 
+
+Add the following code implementation after computing advantage in your trainer:
+
+```python
+kept_indices = []
+initial_size = len(batch)
+# Start with a mask where all samples are kept
+keep_mask = torch.ones(initial_size, dtype=torch.bool, device=batch.batch["advantages"].device)
+
+# 1. Clip negative gradient when entropy > aepo_entropy_high.
+if aepo_entropy_low < metrics["actor/entropy_loss"] < aepo_entropy_high:
+    advantages_per_sequence = batch.batch["advantages"][:, 0]
+    advantage_mask = advantages_per_sequence > 0
+    rewards = batch.batch["token_level_rewards"].sum(dim=-1)
+    # ensure positive rewards
+    advantage_mask = advantage_mask & (rewards > 0)
+    keep_mask &= advantage_mask
+    metrics[f"train/samples_kept_after_ngc"] = advantage_mask.sum().item()
+
+    if final_kept_count < initial_size:
+        # Create a mask for samples to be discarded (where keep_mask is False)
+        discard_mask = ~keep_mask
+        batch.batch["advantages"][discard_mask] = 0
+    
+    kept_indices = torch.where(keep_mask)[0].tolist()
+    if len(kept_indices) % self.actor_rollout_wg.world_size != 0:
+        truncated_count = (final_kept_count // self.actor_rollout_wg.world_size) * self.actor_rollout_wg.world_size
+        print(f"Truncating batch from {len(kept_indices)} to {truncated_count} samples to make it divisible by world_size ({self.actor_rollout_wg.world_size})")
+        kept_indices = kept_indices[:truncated_count]
+        metrics["train/samples_kept_after_ngc"] = truncated_count
+        print(f"After truncation: Kept {truncated_count}/{initial_size} samples.")
+            
+    batch = batch[kept_indices]
+```
+
 
 
 ## 📊 Evaluation
