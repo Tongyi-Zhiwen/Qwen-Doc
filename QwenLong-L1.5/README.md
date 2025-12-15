@@ -330,22 +330,18 @@ The Adaptive Entropy-controlled Policy Optimization (AEPO) algorithm maintains a
 
 
 ```python
-kept_indices = []
-initial_size = len(batch)
-# Start with a mask where all samples are kept
-keep_mask = torch.ones(initial_size, dtype=torch.bool, device=batch.batch["advantages"].device)
-
-# 1. Clip negative gradient when entropy > aepo_entropy_high.
+# Clip negative gradient when entropy > aepo_entropy_high.
 if aepo_entropy_low < metrics["actor/entropy_loss"] < aepo_entropy_high:
+    kept_indices = []
+    initial_size = len(batch)
     advantages_per_sequence = batch.batch["advantages"][:, 0]
     advantage_mask = advantages_per_sequence > 0
     rewards = batch.batch["token_level_rewards"].sum(dim=-1)
     # ensure positive rewards
     advantage_mask = advantage_mask & (rewards > 0)
-    keep_mask &= advantage_mask
     metrics[f"train/samples_kept_after_ngc"] = advantage_mask.sum().item()
     
-    kept_indices = torch.where(keep_mask)[0].tolist()
+    kept_indices = torch.where(advantage_mask)[0].tolist()
     if len(kept_indices) % self.actor_rollout_wg.world_size != 0:
         truncated_count = (final_kept_count // self.actor_rollout_wg.world_size) * self.actor_rollout_wg.world_size
         print(f"Truncating batch from {len(kept_indices)} to {truncated_count} samples to make it divisible by world_size ({self.actor_rollout_wg.world_size})")
