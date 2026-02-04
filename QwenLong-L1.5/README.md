@@ -326,12 +326,20 @@ def compute_grpo_task_norm_outcome_advantage(
 
 ### AEPO
 
-The Adaptive Entropy-controlled Policy Optimization (AEPO) algorithm maintains an optimal balance between exploration (increasing entropy via negative gradients) and exploitation (decreasing entropy without negative gradients). Please add the following implementation after the advantage computation step in your trainer:
-
+The Adaptive Entropy-controlled Policy Optimization (AEPO) algorithm dynamically manages the exploration-exploitation trade-off. Negative Gradient Clipping (NGC)—which filters out data with negative advantages—is activated when the model's entropy exceeds an upper threshold (`aepo_entropy_high`) to disable exploration. NGC remains active until the entropy drops below a lower threshold (`aepo_entropy_low`). Please add the following implementation after the advantage computation step in your trainer. Note that you must initialize `self.aepo_ngc_enabled = False` in your trainer's `__init__` method to track the state.
 
 ```python
-# Clip negative gradient when entropy > aepo_entropy_high.
-if aepo_entropy_low < metrics["actor/entropy_loss"] < aepo_entropy_high:
+current_entropy = metrics.get("actor/entropy_loss", 0.0)
+
+# If entropy rises above high threshold, enable Negative Gradient Clipping (NGC)
+if current_entropy > aepo_entropy_high:
+    self.aepo_ngc_enabled = True
+# If entropy falls below low threshold, disable NGC
+elif current_entropy < aepo_entropy_low:
+    self.aepo_ngc_enabled = False
+
+# Apply Clipping if enabled
+if self.aepo_ngc_enabled:
     kept_indices = []
     initial_size = len(batch)
     advantages_per_sequence = batch.batch["advantages"][:, 0]
