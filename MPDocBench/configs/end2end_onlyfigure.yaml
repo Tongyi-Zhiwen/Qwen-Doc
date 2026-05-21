@@ -1,0 +1,12 @@
+end2end_eval:
+  metrics:
+    figure:
+      metric:
+        - FigureF1
+  dataset:
+    dataset_name: end2end_dataset
+    ground_truth:
+      data_path: /Users/xhd/Desktop/IDP_eval/benchmarks/idpopenbench/0415测试集汇总修改结果_item_sort_omnidoc.json
+    prediction:
+      data_path: /Users/xhd/Desktop/IDP_eval/pred_data/idpopenbench/idp0325
+    match_method: quick_match

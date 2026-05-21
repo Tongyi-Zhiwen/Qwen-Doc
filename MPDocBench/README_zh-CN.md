@@ -4,11 +4,11 @@
 
 多页文档解析的实用评测基准
 
-[![arXiv](https://img.shields.io/badge/arXiv-2605.03904-b31b1b.svg)](https://arxiv.org/abs/2605.03903) [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717.svg)](https://github.com/Tongyi-Zhiwen/Qwen-Doc) [![ModelScope](https://img.shields.io/badge/ModelScope-Dataset-624AFF.svg)](https://huggingface.co/datasets/Eioss/CC-OCR-V2) [![License](https://img.shields.io/badge/License-Apache_2.0-4CAF50.svg)](LICENSE)
+[![arXiv](https://img.shields.io/badge/arXiv-2605.03904-b31b1b.svg)](https://arxiv.org/abs/2605.03903) [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717.svg)](https://github.com/Tongyi-Zhiwen/Qwen-Doc) [![ModelScope](https://img.shields.io/badge/ModelScope-Dataset-624AFF.svg)](https://www.modelscope.cn/datasets/zhoubb/MPDocBench) [![Leaderboard](https://img.shields.io/badge/Leaderboard-MPDocBench-FF6F00.svg)](https://bang123-box.github.io/MPDocBench-Parsing-Leaderboard/) [![License](https://img.shields.io/badge/License-Apache_2.0-4CAF50.svg)](LICENSE)
 
 **MPDocBench-Parse** 是一个面向多页文档解析的综合评测工具包，提供了统一的框架来评估文档解析系统在文本提取、表格识别、公式识别、文档结构以及多模态信息定位等多个维度上的质量。
 
-> **关于开源数据集的说明。** 如原始论文所述，该基准共包含 **433 篇文档**。经合规审查后，**13 篇** 涉及版权的文档已被移除。因此，公开发布版本的数据集包含 **420 篇 PDF 文档**。
+> **关于开源数据集的说明。** 如原始论文所述，该基准共包含 **433 篇文档**。经合规审查后，**13 篇** 涉及版权、安全或政治敏感问题的文档已被移除。因此，公开发布版本的数据集包含 **420 篇 PDF 文档**。
 
 <p align="center">
   <img src="assets/figures/overview.png" alt="MPDocBench-Parse overview" width="90%">
@@ -175,14 +175,9 @@ python pdf_validation.py --config ./configs/end2end.yaml
 
 ## 引用
 
+如果您在研究中使用了 MPDocBench-Parse，请引用我们的论文：
+
 ```bibtex
-@misc{ouyang2024omnidocbenchbenchmarkingdiversepdf,
-      title={OmniDocBench: Benchmarking Diverse PDF Document Parsing with Comprehensive Annotations},
-      author={Linke Ouyang and Yuan Qu and Hongbin Zhou and Jiawei Zhu and Rui Zhang and Qunshu Lin and Bin Wang and Zhiyuan Zhao and Man Jiang and Xiaomeng Zhao and Jin Shi and Fan Wu and Pei Chu and Minghao Liu and Zhenxiang Li and Chao Xu and Bo Zhang and Botian Shi and Zhongying Tu and Conghui He},
-      year={2024},
-      eprint={2412.07626},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2412.07626},
-}
+
 ```
+

@@ -1,0 +1,48 @@
+end2end_eval:
+  metrics:
+    text_block:
+      metric:
+        - Edit_dist
+        # - BLEU
+        # - METEOR
+    merged_text_block:
+      metric:
+        - Edit_dist
+        # - BLEU
+        # - METEOR
+    display_formula:
+      metric:
+        - CDM  # CDM can be calculated directly by calling CDM in config file if you have CDM environment
+    table:
+      metric:
+        - TEDS
+        # - Edit_dist
+    merged_table:
+      metric:
+        - TEDS
+        # - Edit_dist
+    # table_relation:
+    #   metric:
+    #     - Relation_F1
+    # text_relation:
+    #   metric:
+    #     - Relation_F1
+    reading_order:
+      metric:
+        - Edit_dist
+    head:
+      metric:
+        - HeadTEDS
+    figure:
+      metric:
+        - FigureF1
+  dataset:
+    dataset_name: end2end_dataset
+    ground_truth:
+      data_path: MPDocBench.json
+      # data_path: /nas-alinlp/xhd/OmniDocBench-main/benchmarks/omnidocbench1_5/formular.json
+    prediction:
+      data_path: ./markdown/qianfan-ocr_md
+    match_method: quick_match
+    # filter:
+    #   language: english

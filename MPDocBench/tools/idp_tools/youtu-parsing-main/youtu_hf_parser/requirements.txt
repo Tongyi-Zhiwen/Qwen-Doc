@@ -1,0 +1,15 @@
+torch==2.6.0
+torchvision==0.21.0
+transformers==4.51.3
+PyMuPDF==1.26.5
+numpy==2.0.2
+accelerate==1.12.0
+opencv-python-headless==4.12.0.88
+numba==0.60.0
+Pillow>=8.0.0
+tqdm
+# for youtu_parsing_utils
+Pillow==12.1.0
+PyMuPDF==1.26.5
+numpy==2.0.2
+# git+https://git.tencent.com/marcowu/youtu-parsing-sdk.git#subdirectory=youtu_parsing_utils

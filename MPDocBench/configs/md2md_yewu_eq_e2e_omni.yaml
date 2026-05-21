@@ -1,0 +1,19 @@
+end2end_eval:
+  metrics:
+    text_block:
+      metric:
+        - Edit_dist  
+    display_formula:
+      metric:
+        - CDM 
+    reading_order:
+      metric:
+        - Edit_dist
+  dataset:
+    dataset_name: md2md_dataset
+    ground_truth:
+      data_path: ./benchmarks/omni_eq_gt
+    prediction:
+      data_path: .pred_data/omni_eq/260122_sample_md
+    match_method: quick_match
+    

@@ -1,0 +1,109 @@
+dots.ocr LICENSE AGREEMENT
+
+Effective Date: [ August 8, 2025]
+
+Copyright Holder: [Xingyin Information Technology (Shanghai) Co., Ltd]
+
+This License Agreement (“Agreement”) governs Your use, reproduction, modification, and distribution of dots.ocr (the "Model Materials"). This Agreement is designed to maximize the openness and use of the Model Materials while addressing the unique legal, ethical, and technical challenges posed by large language models.
+
+WHEREAS, Licensor has developed the dots.ocr document parsing model and intends to distribute the Model Materials under an open‑source framework;
+WHEREAS, traditional open-source licenses (e.g., the MIT License) may not fully address the complexity inherent complexities of document parsing models, namely their multiple components (code, weights, training data), potential ethical risks, data‑governance issues, and intellectual‑property and liability questions regarding AI‑generated content;
+WHEREAS, Licensor seeks to provide a legal framework that ensures maximum access to and use of the Model Materials while clearly defining the rights, obligations, and liabilities of Licensee;
+
+THEREFORE, the parties agree that, subject to the MIT License, they shall be bound by the following terms and conditions:
+
+1. Definitions and Interpretation
+Purpose: To define key terms used in this Agreement, particularly "Model Materials," ensuring clarity of the license scope beyond traditional software code. To clarify the order of precedence between this Agreement and the MIT License to avoid conflict.
+
+1.1 “Licensor” shall mean the entity providing the Model Materials under this Agreement, namely [Xingyin Information Technology (Shanghai) Co., Ltd].
+
+1.2 “Licensee” or "You" shall mean any individual or entity exercising permissions granted by this Agreement.
+
+1.3 “Model Materials” shall mean all materials provided by Licensor under this Agreement, including but not limited to:
+        (a) one or more machine‑learning models, including architecture and trained parameters (i.e., model weights);
+        (b) all associated preprocessing, training, inference, and fine‑tuning code;
+        (c) training datasets and evaluation scripts (or their detailed descriptions and access mechanisms); and
+        (d) any accompanying documentation, metadata, and tools.
+The above Model Materials shall be subject to the content published on the Licensor’s website or GitHub repository at https://github.com/rednote-hilab/dots.ocr.
+
+1.4 “Outputs” shall mean any content generated through the use of the Model Materials, such as text, tables, code,layout information, and formulas extracted from documents.
+
+1.5 “MIT License” shall mean The MIT Open Source License published by the Massachusetts Institute of Technology.
+
+1.6   Priority of Agreement. In the event of any conflict or inconsistency between this Agreement and the MIT License, the terms of the MIT License shall prevail. However, if the terms of the MIT License are ambiguous or silent on a particular matter, the provisions of this Agreement shall apply and supplement the MIT License.
+
+2. Grant of Rights and Scope of Use
+
+Purpose: To grant broad, permissive rights to the Licensee for the Model Materials—including code, weights, data, and documentation—to ensure maximum openness and flexibility while clarifying the free use of model-generated content. Additionally, it clarifies the feasibility of transitioning from open-source to commercial‑use and the use of OpenAPI interfaces.
+
+2.1   Grant of Copyright License. Subject to Licensee's compliance with this Agreement, Licensor hereby grants Licensee a perpetual, worldwide, non‑exclusive, no-charge, royalty‑free copyright license to use (run or test), reproduce, modify, create derivative works of, merge, publish, distribute the Model Materials; sublicense and/or sell copies of the Model Materials or any derivative works thereof; and incorporate the unmodified or modified Model Materials into proprietary products or services, including for commercial purposes, software‑as‑a‑service (SaaS) offerings, or via OpenAPI or other interfaces.
+
+2.2   Fundamental Capabilities. The Model Materials only provide the fundamental model’s capabilities. Licensees may develop derivative AI applications or undertake task‑specific training thereon.
+
+2.3   From Open Source to Commercial Use. The open-source release does not preclude Licensor’s commercial exploitation of the Model Materials, in whole or in part. Any such commercial use shall, at that time, be subject to license agreements between Licensor and applicable users.
+
+2.4   API‑Service Exception. Licensees who access the Model Materials through API calls or provide model services via API interfaces(without directly distributing model weights )shall not be subject to this Agreement unless otherwise expressly agreed. Instead, such use shall be governed by the API terms of use published by Licensor (if any).
+
+3. Acceptable Use Policy and Prohibited Uses
+
+3.1   Responsible Use. Licensee must use the Model Materials in a responsible, ethical, and lawful manner, in compliance with all applicable laws, regulations, industry standards, and best practices.
+
+3.2   Enterprise On‑Premises Deployment. The Licensee may deploy the Model Materials in closed‑source, on‑premises enterprise environments.
+
+3.3   Prohibited Uses. Any breach of the prohibitions below will result in the automatic termination of all licenses granted under this Agreement. Licensee agrees not to use the Model Materials or any derivative works thereof, in connection with:
+(a) Identification and Utilization of Illegal/Harmful Content:Includes identifying graphic/text materials used for counterfeiting certificates/invoices, perpetrating fraud, or launching cyberattacks; or processing images containing illegal content such as violence, criminal activities, disinformation, or child exploitation.
+(b) Privacy Infringement and Discriminatory Practices:Extracting personal sensitive information (e.g., ID numbers, medical records, biometric data) or protected characteristics (e.g., race, gender) from images without legal authorization or consent, for purposes of privacy violation, automated discriminatory decision-making, or harassment.
+(c) Copyright Restrictions:Licensees shall not use the tool for unauthorized digitization of publications/document scanning or bulk scraping of content. Any use involving publications or other copyright-protected materials must first obtain relevant permissions.
+
+4. Intellectual Property Ownership and Contributions
+
+4.1   Licensor's Copyright Reservation. Licensor reserves all right, title, and interest in and to the Model Materials (including the model architecture, parameters, code, and original training data), except as expressly licensed herein. The original copyright of the Model Materials belongs to the Licensor.
+
+4.2   Patent License. Subject to the terms and conditions of this Agreement, Licensor hereby grants Licensee a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable patent license to make, have made, use, offer to sell, sell, import, and otherwise transfer the Model Materials, where such license applies only to those patent claims licensable by the Lisensor that are necessarily infringed by its contribution(s). 
+If Licensee institutes patent litigation against any entity (including a cross-claim or counterclaim in a lawsuit) alleging that the Model Materials constitute direct or contributory patent infringement, then any patent licenses granted under this License for the Model Materials shall terminate as of the date such litigation is asserted or filed.
+
+4.3   Outputs: The Outputs generated through the use of the Model Materials generally refer to text, tables, layouts, and other content extracted from documents or images. The extracted content itself does not generate new intellectual property rights, and all intellectual property remains with the original authors or copyright holders. The Licensee is responsible for due diligence regarding the legality of the Outputs, particularly where the content extracted by the OCR model may be substantially similar to existing copyrighted works, which could present intellectual property infringement risks. The Licensor assumes no liability for such infringements.
+4.4   Trademarks. Nothing in this License permits Licensee to make use of Licensor’s trademarks, trade names, logos (e.g., “rednote,” “Xiaohongshu,” “dots.ocr”) or to otherwise suggest endorsement or misrepresent the relationship between the parties, unless Licensor’s prior written approval is granted.
+
+5. Data Governance, Privacy, and Security
+ 
+5.1   Data Quality and Bias. Licensee shall use training data from lawful sources and is encouraged to conduct due diligence before deploying the Model Materials and to take reasonable steps to mitigate any known biases in its training data or applications.
+
+5.2   Privacy Protection.
+        (a) Sensitive‑Data Restrictions. It is prohibited to use the Model Materials to process,or extract infer sensitive personal data protected under specific laws (such as GDPR or HIPAA), particularly when dealing with documents containing personally identifiable information (such as ID numbers, health data, financial information, etc.), unless Licensee has obtained all necessary consents, lawful basis, or authorizations, and has implemented adequate anonymization, pseudonymization, or other privacy-enhancing technologies.
+        (b) Data Minimization and Purpose Limitation. The Licensee shall follow the principle of data minimization when using the OCR Model, processing only the user data necessary for specific, explicit, and lawful purposes. Specifically, the OCR Model should avoid processing unnecessary sensitive data and ensure compliance with applicable privacy protection laws during data handling.
+        (c) Transparency. Licensee shall provide clear and transparent privacy policies and terms of use when processing user data, particularly during document scanning and information extraction. . 
+
+5.3   Security Measures. Licensee shall implement appropriate technical and administrative safeguards to protect the Model Materials and any associated data against unauthorized access, disclosure, alteration, or destruction. Such measures may include, but are not limited to, encryption, access controls, logging, and audit trails.
+
+5.4   Further Training. Licensee may only use user‑provided input or Outputs for training, fine-tuning, or improving other AI models if it has obtained the specific and informed consent of data subjects.
+
+6. Disclaimer of Warranty and Limitation of Liability
+
+6.1 “AS IS” Basis. Unless required by applicable law, the Model Materials are provided on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied, including, without limitation, any warranties or conditions of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, OR FITNESS FOR A PARTICULAR PURPOSE. Licensee is solely responsible for determining the appropriateness of using or redistributing the Model Materials and assume any risks associated with the exercise of permissions under this License. Licensor does not provide any warranty of non-infringement but represents that no infringing code has been knowingly included.
+
+6.2   Outputs Disclaimer. As a neutral technology, Licensor disclaims all liability for the accuracy, completeness, reliability, safety, legality, or suitability of any Outputs. The Licensee is solely responsible for verifying the accuracy and appropriateness of AI-generated content and shall provide appropriate disclosures when publishing or relying upon such content.
+
+6.3   Limitation of Liability and Recourse. In no event and under no legal theory, whether in tort (including negligence), contract, or otherwise, shall Licensor or contributors be liable for any claims, damages, including any direct, indirect, special, incidental, or consequential damages of any character arising as a result of this License or out of the use or inability to use the Model Materials (including but not limited to damages for loss of goodwill, work stoppage, computer failure or malfunction, or any and all other commercial damages or losses), even if such Licensor has been advised of the possibility of such damages. If such losses are incurred, recourse may be sought against the Licensee responsible for causing the loss.
+
+6.4   Content‑Filtering Disclaimer. Although the Model Materials may include content‑filtering mechanisms, Licensor makes no warranties of any kind regarding the stability, quality, accuracy, completeness, or any specific outcome of Outputs. Licensee is solely responsible for reviewing, verifying, and performing quality control on Outputs and assumes all associated risks and liabilities.
+
+7. Attribution and License Reservation
+
+7.1   License. When distributing or redistributing the Model Materials, Licensee must give any other recipients of the Model Materials a copy of this Agreement.
+
+7.2   Copyright and Notices. When distributing any part of the Model Materials, Licensee must retain all copyright, patent, trademark, and attribution notices included in the Model Materials.
+
+7.3   Attribution. Licensee is encouraged to prominently display the name of Licensor and the Model Materials in any public statements, products, or services that contain the Model Materials (or any derivative works thereof), to promote transparency and community trust. If Licensee distributes modified weights or fine‑tuned models based on the Model Materials, Licensee must prominently display the following statement in the related website or documentation: “Built with dots.ocr.”
+
+8. Governing Law and Dispute Resolution
+
+8.1   Governing Law. This Agreement shall be governed by and construed in accordance with the laws of the People’s Republic of China, without regard to its conflict of laws principles.
+
+8.2   Dispute Resolution. Any dispute claim, or disagreement arising out of or relating to this Agreement shall first be resolved through amicable consultation. If such consultation fails, the dispute shall be submitted to the Hangzhou Arbitration Commission for arbitration. The arbitration shall be conducted in accordance with the laws of China, and the place of arbitration shall be [Hangzhou, China]. The arbitral award shall be final and binding upon both parties.
+
+9. Regulatory Compliance Amendments
+In the event that any part of this Agreement becomes invalid or requires adjustment due to changes in applicable laws or regulations, Licensor reserves the right to issue a revised version of this Agreement. Licensee shall migrate to the new version within [e.g., ninety (90)] days of its release; otherwise, all rights granted under this Agreement shall automatically terminate.
+
+10. Security Reporting
+Licensee discovering any security vulnerability in the Model Materials may report it to Licensor via: dots-feedback@xiaohongshu.com. Licensee shall not disclose vulnerability details until Licensor issues an official remediation, unless otherwise required by law.

@@ -1,0 +1,9 @@
+transformers==4.46.3
+tokenizers==0.20.3
+PyMuPDF
+img2pdf
+einops
+easydict
+addict 
+Pillow
+numpy

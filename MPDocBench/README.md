@@ -4,11 +4,11 @@ English | [简体中文](./README_zh-CN.md)
 
 Benchmarking Practical Multi-page Document Parsing
 
-[![arXiv](https://img.shields.io/badge/arXiv-2605.03904-b31b1b.svg)](https://arxiv.org/abs/2605.03903) [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717.svg)](https://github.com/Tongyi-Zhiwen/Qwen-Doc) [![ModelScope](https://img.shields.io/badge/ModelScope-Dataset-624AFF.svg)](https://huggingface.co/datasets/Eioss/CC-OCR-V2) [![License](https://img.shields.io/badge/License-Apache_2.0-4CAF50.svg)](LICENSE)
+[![arXiv](https://img.shields.io/badge/arXiv-2605.03904-b31b1b.svg)](https://arxiv.org/abs/2605.03903) [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717.svg)](https://github.com/Tongyi-Zhiwen/Qwen-Doc) [![ModelScope](https://img.shields.io/badge/ModelScope-Dataset-624AFF.svg)](https://www.modelscope.cn/datasets/zhoubb/MPDocBench) [![Leaderboard](https://img.shields.io/badge/Leaderboard-MPDocBench-FF6F00.svg)](https://bang123-box.github.io/MPDocBench-Parsing-Leaderboard/) [![License](https://img.shields.io/badge/License-Apache_2.0-4CAF50.svg)](LICENSE)
 
 **MPDocBench-Parse** is a comprehensive evaluation toolkit for multi-page document parsing. It provides a unified framework to assess the quality of document parsing systems across multiple dimensions including text extraction, table recognition, formula recognition, document structure, and multi-modal information grounding.
 
-> **Note on the open-sourced dataset.** As described in the original paper, the benchmark contains a total of **433 documents**. After an internal compliance review, **13 documents** involving copyright concern are removed. As a result, the publicly released version of the dataset contains **420 PDF documents**.
+> **Note on the open-sourced dataset.** As described in the original paper, the benchmark contains a total of **433 documents**. After an internal compliance review, **13 documents** involving copyright, safety, or politically sensitive concerns are removed. As a result, the publicly released version of the dataset contains **420 PDF documents**.
 
 <p align="center">
   <img src="assets/figures/overview.png" alt="MPDocBench-Parse overview" width="90%">
@@ -175,14 +175,8 @@ If any content in this benchmark raises copyright concerns, please reach out to 
 
 ## Citation
 
+If you find MPDocBench-Parse useful in your research, please consider citing our paper:
+
 ```bibtex
-@misc{ouyang2024omnidocbenchbenchmarkingdiversepdf,
-      title={OmniDocBench: Benchmarking Diverse PDF Document Parsing with Comprehensive Annotations},
-      author={Linke Ouyang and Yuan Qu and Hongbin Zhou and Jiawei Zhu and Rui Zhang and Qunshu Lin and Bin Wang and Zhiyuan Zhao and Man Jiang and Xiaomeng Zhao and Jin Shi and Fan Wu and Pei Chu and Minghao Liu and Zhenxiang Li and Chao Xu and Bo Zhang and Botian Shi and Zhongying Tu and Conghui He},
-      year={2024},
-      eprint={2412.07626},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2412.07626},
-}
 ```
+

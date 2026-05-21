@@ -1,0 +1,12 @@
+[
+    {
+        "img_id": "case_1",  
+        "gt": "y = 2z + 3x",
+        "pred": "y = 2x + 3z"
+    },
+    {
+        "img_id": "case_2",
+        "gt": "y = x^2 + 1",
+        "pred": "y = x^2 + 1"
+    }
+]

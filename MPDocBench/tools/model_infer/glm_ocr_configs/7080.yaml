@@ -1,0 +1,214 @@
+pipeline:
+  maas:
+    enabled: false
+  ocr_api:
+    api_host: 127.0.0.1
+    api_port: 7080
+    model: glm-ocr
+    model_name: glm-ocr
+    
+  max_workers: 32
+  # Queue sizes
+  page_maxsize: 100
+  region_maxsize: 800
+
+  # Page loader: handles image/PDF loading and API request building
+  page_loader:
+    # Generation parameters
+    max_tokens: 8192
+    temperature: 0.0
+    top_p: 0.00001
+    top_k: 1
+    repetition_penalty: 1.1
+
+    # Image processing
+    t_patch_size: 2
+    patch_expand_factor: 1
+    image_expect_length: 6144
+    image_format: JPEG # JPEG, PNG, WEBP
+    min_pixels: 12544 # 112 * 112
+    max_pixels: 71372800 # 14 * 14 * 4 * 1280
+
+    # Default prompt for OCR (used when no custom prompt provided)
+    default_prompt: >
+      Recognize the text in the image and output in Markdown format.
+      Preserve the original layout (headings/paragraphs/tables/formulas).
+      Do not fabricate content that does not exist in the image.
+
+    # Task-specific prompts (used in layout mode)
+    task_prompt_mapping:
+      text: "Text Recognition:"
+      table: "Table Recognition:"
+      formula: "Formula Recognition:"
+
+    # PDF processing (pypdfium2 only)
+    pdf_dpi: 144
+    pdf_max_pages: null # null = no limit
+    pdf_verbose: false
+
+  # Result formatter: post-processing and output formatting
+  result_formatter:
+    # Filter nested regions (remove overlapping smaller regions)
+    filter_nested: true
+    min_overlap_ratio: 0.8
+
+    # Output format: json, markdown, or both
+    output_format: both
+
+    # Label to visualization category mapping (for layout visualization)
+    label_visualization_mapping:
+      table:
+        - table
+      formula:
+        - display_formula
+        - inline_formula
+      image:
+        - chart
+        - image
+      text:
+        - abstract
+        - algorithm
+        - content
+        - doc_title
+        - figure_title
+        - paragraph_title
+        - reference_content
+        - text
+        - vertical_text
+        - vision_footnote
+        - seal
+        - formula_number
+
+  # Enable layout detection mode
+  # - true: detect document regions (tables, figures, text blocks) then OCR each
+  # - false: direct OCR on the whole image
+  enable_layout: true
+
+  # Layout detection settings (used when enable_layout=true)
+  layout:
+    # PP-DocLayoutV3 model directory
+    # Can be a local folder or a Hugging Face model id
+    # (Use *_safetensors for Transformers; PaddlePaddle/PP-DocLayoutV3 is a PaddleOCR export)
+    model_dir: /nas-mmu/zhoubb/download_models/PP-DocLayoutV3_safetensors
+
+    # Detection threshold
+    threshold: 0.3
+    # threshold_by_class:           # per-class threshold override
+    #   0: 0.5
+    #   1: 0.3
+    #   text: 0.5
+    #   table: 0.2
+
+    # Processing
+    # batch_size: max images per model forward pass (reduce to 1 if OOM)
+    batch_size: 1
+    workers: 1
+    cuda_visible_devices: "0"
+    # Explicit device placement for the layout model.
+    # - null (default): auto-select (CUDA if available via cuda_visible_devices,
+    #   otherwise CPU).
+    # - "cpu": force CPU even when a GPU is available. Useful for single-GPU
+    #   setups where the GPU is reserved for the OCR model.
+    # - "cuda" or "cuda:N": use a specific GPU (overrides cuda_visible_devices).
+    # Can also be set via GLMOCR_LAYOUT_DEVICE env var or --layout-device CLI flag.
+    # device: null
+    # img_size: null                # resize input (optional)
+
+    # Post-processing
+    layout_nms: true
+    layout_unclip_ratio:
+      - 1.0
+      - 1.0
+
+    # Merge mode for overlapping bboxes: "large" or "small"
+    # Can be a single value or per-class dict
+    layout_merge_bboxes_mode:
+      0: large # abstract
+      1: large # algorithm
+      2: large # aside_text
+      3: large # chart
+      4: large # content
+      5: large # display_formula
+      6: large # doc_title
+      7: large # figure_title
+      8: large # footer
+      9: large # footer
+      10: large # footnote
+      11: large # formula_number
+      12: large # header
+      13: large # header
+      14: large # image
+      15: large # inline_formula
+      16: large # number
+      17: large # paragraph_title
+      18: small # reference
+      19: large # reference_content
+      20: large # seal
+      21: large # table
+      22: large # text
+      23: large # vertical_text
+      24: large # vision_footnote
+
+    # Map detected labels to OCR task types
+    # - text/table/formula: OCR with corresponding prompt
+    # - skip: keep region but don't OCR (e.g., images)
+    # - abandon: discard region entirely
+    label_task_mapping:
+      text:
+        - abstract
+        - algorithm
+        - content
+        - doc_title
+        - figure_title
+        - paragraph_title
+        - reference_content
+        - text
+        - vertical_text
+        - vision_footnote
+        - seal
+        - formula_number
+      table:
+        - table
+      formula:
+        - display_formula
+        - inline_formula
+      skip:
+        - chart
+        - image
+      abandon:
+        - header
+        - footer
+        - number
+        - footnote
+        - aside_text
+        - reference
+        - footer_image
+        - header_image
+
+    # Map label index to label name
+    id2label:
+      0: abstract
+      1: algorithm
+      2: aside_text
+      3: chart
+      4: content
+      5: display_formula
+      6: doc_title
+      7: figure_title
+      8: footer
+      9: footer_image
+      10: footnote
+      11: formula_number
+      12: header
+      13: header_image
+      14: image
+      15: inline_formula
+      16: number
+      17: paragraph_title
+      18: reference
+      19: reference_content
+      20: seal
+      21: table
+      22: text
+      23: vertical_text
+      24: vision_footnote

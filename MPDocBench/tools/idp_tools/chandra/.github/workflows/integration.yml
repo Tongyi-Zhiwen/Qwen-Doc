@@ -1,0 +1,29 @@
+name: Chandra CI
+
+on: [push]
+
+jobs:
+  tests:
+    runs-on: t4_gpu
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install apt requirements
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libpango-1.0-0 libharfbuzz0b libpangoft2-1.0-0 libgdk-pixbuf2.0-0 libcairo2 libffi-dev shared-mime-info
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+      - name: Install python dependencies
+        run: |
+          uv sync --group dev
+      - name: Run tests
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          PYTHONPATH: .
+          TORCH_ATTN: "sdpa"
+        run: |
+          uv run pytest tests/integration

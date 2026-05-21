@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  dots-ocr-server:
+    image: dots-ocr:latest
+    container_name: dots-ocr-container
+    ports:
+      - "8000:8000"
+    volumes:
+      #download model to local，model url：https://www.modelscope.cn/models/rednote-hilab/dots.ocr
+      - ./model/dots.ocr:/workspace/weights/DotsOCR
+    environment:
+      - PYTHONPATH=/workspace/weights:$PYTHONPATH
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+              device_ids: ['0']
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - |
+        set -ex;
+        echo '--- Starting setup and server ---';
+        echo 'Modifying vllm entrypoint...';
+        # This sed command patches the vllm entrypoint script to import the custom modeling code.
+        sed -i '/^from vllm\.entrypoints\.cli\.main import main/a from DotsOCR import modeling_dots_ocr_vllm' $(which vllm) && \
+        echo 'vllm script after patch:';
+        # Show the patched part of the vllm script for verification.
+        grep -A 1 'from vllm.entrypoints.cli.main import main' $(which vllm) && \
+        echo 'Starting server...';
+        # Use 'exec' to replace the current shell process with the vllm server,
+        # ensuring logs are properly forwarded to Docker's standard output.
+        exec vllm serve /workspace/weights/DotsOCR \
+            --tensor-parallel-size 1 \
+            --gpu-memory-utilization 0.8 \
+            --chat-template-content-format string \
+            --served-model-name dotsocr-model \
+            --trust-remote-code
+
+
+
+

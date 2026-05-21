@@ -1,0 +1,1 @@
+CUDA_VISIBLE_DEVICES=0 nohup vllm serve dots.mocr --tensor-parallel-size 1 --gpu-memory-utilization 0.9  --chat-template-content-format string --served-model-name ${model_name} --trust-remote-code

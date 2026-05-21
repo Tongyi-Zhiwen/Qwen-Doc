@@ -20,6 +20,7 @@ This repository aims to bring together a series of explorations and practices ce
 
 ## 🎉 News
 
+- **May 21, 2026:** 🔥 We released the **MPDocBench-Parse**, a practical benchmark for multi-page document parsing based on 420 real-world PDFs (3,135 images) from 15 domains. Beyond text/formula/table fidelity, it also evaluates semantic continuity, figure extraction, and document-level logical structure.
 - **Dec 15, 2025:** 🔥 We released the **QwenLong-L1.5** project! It provides a complete post-training recipe for long-context reasoning and memory management. The corresponding model and technical report have also been released.
 - **Dec 15, 2025:** 🔥 We released the code implementation of **SPELL**, which is a self-play reinforcement learning framework designed to improve long-context reasoning abilities in LLMs.
 - **May 28, 2025:** 🔥 The **QwenLong-L1** project released `QwenLong-L1-32B-AWQ`, a version processed with AWQ int4 quantization.
@@ -40,6 +41,10 @@ This repository currently includes the following projects:
 ### 3. [SPELL](./SPELL)
 
 - **Description:** A self-play reinforcement learning framework designed to improve long-context reasoning abilities in LLMs. SPELL cycles a single LLM through three roles—questioner, responder, and verifier—to autonomously generate training data and rewards, without requiring external supervision. Extensive experiments across 12 models and 6 benchmarks demonstrate consistent improvements. Notably, SPELL provides a potential path for elevating the performance ceiling of models surpassing human performance.
+
+### 4. [MPDocBench-Parse](./MPDocBench)
+
+- **Description:** MPDocBench-Parse is a comprehensive benchmark and evaluation toolkit designed for practical multi-page document parsing. It is constructed from 420 real-world PDF documents, comprising 3,135 page images, and covers 15 domains across both English and Chinese. In addition to assessing element-level fidelity, including text, formulas, and tables, MPDocBench-Parse further incorporates several critical yet underexplored evaluation dimensions in existing benchmarks: semantic continuity, figure extraction, and document-level logical structure.
 
 
 ## ⭐ Star History
@@ -76,3 +81,4 @@ If you find our work helpful in your research, please consider citing our papers
     year={2025}
 }
 ```
+

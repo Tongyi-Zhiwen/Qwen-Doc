@@ -1,0 +1,9 @@
+include README.md
+include requirements.txt
+include *.py
+recursive-include preprocessing *.py
+recursive-include preprocessing/angle_predictor *.py
+recursive-include preprocessing/angle_predictor/model_structure *.py
+recursive-include * *.py
+recursive-include * *.txt
+recursive-include * *.md

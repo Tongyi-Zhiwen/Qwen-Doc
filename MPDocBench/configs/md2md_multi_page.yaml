@@ -1,0 +1,25 @@
+end2end_eval:
+  metrics:
+    text_block:
+      metric:
+        - Edit_dist
+        # - METEOR
+        # - BLEU
+    display_formula:
+      metric:
+        # - Edit_dist
+        - CDM
+    table:
+      metric:
+        - TEDS
+        # - Edit_dist
+    reading_order:
+      metric:
+        - Edit_dist
+  dataset:
+    dataset_name: md2md_dataset
+    ground_truth:
+      data_path: /nas-mmu/zhoubb/data/Multi_Page_Documents/markdown/0323/gt
+    prediction:
+      data_path: /nas-mmu/zhoubb/data/Multi_Page_Documents/markdown/0323/mineru_2.5_md
+    match_method: simple_match
