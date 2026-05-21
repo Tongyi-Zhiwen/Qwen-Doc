@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MPDocBench-Parse Leaderboard</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>M</text></svg>">
+  <style>
+    :root {
+      --bg: #f7f5fb;
+      --card-bg: #ffffff;
+      --text: #1a1025;
+      --text-secondary: #6b7280;
+      --border: #e4dff0;
+      --accent: #7c3aed;
+      --accent-light: #ede9fe;
+      --header-bg: #f3f0fa;
+      --group-bg: #ede9fe;
+      --group-text: #5b21b6;
+      --bar-bg: #e4dff0;
+      --bar-fill: #8b5cf6;
+      --bar-fill-top: #6d28d9;
+      --hover-row: #f5f0ff;
+      --shadow: 0 1px 3px rgba(109,40,217,0.08);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 2rem 1.5rem;
+    }
+
+    .container {
+      max-width: 1560px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      margin-bottom: 2rem;
+    }
+
+    .header h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .header p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .header .links {
+      margin-top: 0.75rem;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .header .links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .header .links a:hover { text-decoration: underline; }
+
+    .header .links .sep {
+      color: var(--border);
+    }
+
+    /* Filters */
+    .filters {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 0.4rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--card-bg);
+      color: var(--text);
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-weight: 500;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* Table wrapper */
+    .table-wrap {
+      background: var(--card-bg);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      overflow-x: auto;
+      box-shadow: var(--shadow);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1300px;
+    }
+
+    /* Sticky first column */
+    th:first-child, td:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 2;
+      background: var(--card-bg);
+    }
+
+    thead th:first-child {
+      background: var(--header-bg);
+    }
+
+    th {
+      padding: 0.6rem 0.6rem;
+      text-align: center;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: var(--header-bg);
+      border-bottom: 2px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+      position: sticky;
+      top: 0;
+      z-index: 3;
+    }
+
+    th .sort-arrow {
+      display: inline-block;
+      width: 14px;
+      text-align: center;
+      opacity: 0.3;
+      font-size: 0.7rem;
+    }
+
+    th.sorted .sort-arrow {
+      opacity: 1;
+      color: var(--accent);
+    }
+
+    th.sorted {
+      color: var(--accent);
+    }
+
+    td {
+      padding: 0.65rem 0.75rem;
+      text-align: center;
+      font-size: 0.85rem;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    td.model-name {
+      text-align: left;
+      font-weight: 600;
+      min-width: 180px;
+      padding-left: 1rem;
+    }
+
+    td.rank-cell {
+      font-weight: 700;
+      color: var(--text-secondary);
+      width: 40px;
+    }
+
+    td.rank-cell.top3 {
+      color: var(--accent);
+    }
+
+    /* Group separator row */
+    tr.group-row td {
+      background: var(--group-bg);
+      color: var(--group-text);
+      font-weight: 700;
+      font-size: 0.82rem;
+      text-align: left;
+      padding: 0.5rem 1rem;
+      border-bottom: 2px solid var(--group-text);
+    }
+
+    /* Overall cell highlight */
+    td.overall-cell {
+      font-weight: 700;
+    }
+
+    td.overall-cell.top1 {
+      color: var(--accent);
+    }
+
+    /* Bar visualization */
+    .bar-cell {
+      position: relative;
+      min-width: 90px;
+    }
+
+    .bar-container {
+      width: 100%;
+      height: 6px;
+      background: var(--bar-bg);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 2px;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: var(--bar-fill);
+      transition: width 0.3s;
+    }
+
+    .bar-fill.top {
+      background: var(--bar-fill-top);
+    }
+
+    /* Best score highlight */
+    td.best {
+      font-weight: 700;
+      color: var(--bar-fill-top);
+    }
+
+    /* Hover */
+    tbody tr:not(.group-row):hover td {
+      background: var(--hover-row);
+    }
+
+    tbody tr:not(.group-row):hover td:first-child {
+      background: var(--hover-row);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body { padding: 1rem 0.5rem; }
+      .header h1 { font-size: 1.3rem; }
+      .filters { gap: 0.35rem; }
+      .filter-btn { padding: 0.35rem 0.75rem; font-size: 0.8rem; }
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>MPDocBench-Parse Leaderboard</h1>
+      <p>20 models evaluated across 8 metrics. Overall score is the weighted mean. Click any column header to sort.</p>
+      <div class="links">
+        <a href="https://arxiv.org/abs/2605.03903" target="_blank">Paper</a>
+        <span class="sep">|</span>
+        <a href="https://github.com/Tongyi-Zhiwen/Qwen-Doc" target="_blank">GitHub</a>
+        <span class="sep">|</span>
+        <a href="https://huggingface.co/datasets/Eioss/CC-OCR-V2" target="_blank">Dataset</a>
+        <span class="sep">|</span>
+        <a href="./README.md">README</a>
+      </div>
+    </div>
+
+    <div class="filters" id="filters"></div>
+
+    <div class="table-wrap">
+      <table id="leaderboard">
+        <thead id="thead"></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="footer">
+      MPDocBench-Parse &mdash; Apache License 2.0 &mdash;
+      <a href="https://github.com/Tongyi-Zhiwen/Qwen-Doc" target="_blank">GitHub</a>
+    </div>
+  </div>
+
+<script>
+// Data
+const models = [
+  { group: "Pipeline-based Specialized VLMs", name: "PaddleOCR-VL-1.5", overall: 80.70, textEdit: 0.048, truncTextEdit: 0.152, cdm: 87.14, teds: 83.87, truncTeds: 83.09, figF1: 74.99, readOrder: 0.106, headTeds: 47.11 },
+  { group: "Pipeline-based Specialized VLMs", name: "MinerU2.5 pro", overall: 80.49, textEdit: 0.052, truncTextEdit: 0.188, cdm: 87.96, teds: 88.99, truncTeds: 91.44, figF1: 72.83, readOrder: 0.099, headTeds: 36.56 },
+  { group: "Pipeline-based Specialized VLMs", name: "MinerU2.5", overall: 77.30, textEdit: 0.060, truncTextEdit: 0.326, cdm: 85.42, teds: 86.18, truncTeds: 88.02, figF1: 72.32, readOrder: 0.120, headTeds: 37.01 },
+  { group: "Pipeline-based Specialized VLMs", name: "GLM-OCR", overall: 75.01, textEdit: 0.062, truncTextEdit: 0.313, cdm: 87.62, teds: 82.69, truncTeds: 63.15, figF1: 71.63, readOrder: 0.126, headTeds: 44.95 },
+  { group: "Pipeline-based Specialized VLMs", name: "MonkeyOCR-pro-3B", overall: 74.41, textEdit: 0.055, truncTextEdit: 0.302, cdm: 88.53, teds: 78.76, truncTeds: 61.22, figF1: 73.69, readOrder: 0.119, headTeds: 40.65 },
+  { group: "Pipeline-based Specialized VLMs", name: "Youtu-Parsing", overall: 74.34, textEdit: 0.091, truncTextEdit: 0.343, cdm: 86.87, teds: 85.14, truncTeds: 63.95, figF1: 71.62, readOrder: 0.130, headTeds: 43.55 },
+  { group: "Pipeline-based Specialized VLMs", name: "Dolphin-v2", overall: 73.07, textEdit: 0.106, truncTextEdit: 0.333, cdm: 79.58, teds: 84.16, truncTeds: 64.31, figF1: 63.98, readOrder: 0.138, headTeds: 50.23 },
+
+  { group: "End-to-End Specialized VLMs", name: "DeepSeek-OCR2", overall: 76.43, textEdit: 0.068, truncTextEdit: 0.256, cdm: 86.62, teds: 81.25, truncTeds: 63.02, figF1: 73.46, readOrder: 0.104, headTeds: 49.93 },
+  { group: "End-to-End Specialized VLMs", name: "Logics-Parsing-v2", overall: 74.57, textEdit: 0.047, truncTextEdit: 0.313, cdm: 86.67, teds: 83.95, truncTeds: 63.88, figF1: 71.71, readOrder: 0.085, headTeds: 34.72 },
+  { group: "End-to-End Specialized VLMs", name: "ChandraOCR 2", overall: 74.62, textEdit: 0.097, truncTextEdit: 0.294, cdm: 86.67, teds: 84.74, truncTeds: 64.70, figF1: 64.66, readOrder: 0.134, headTeds: 48.69 },
+  { group: "End-to-End Specialized VLMs", name: "dots.ocr", overall: 74.19, textEdit: 0.074, truncTextEdit: 0.305, cdm: 85.88, teds: 83.46, truncTeds: 60.71, figF1: 67.59, readOrder: 0.114, headTeds: 45.21 },
+  { group: "End-to-End Specialized VLMs", name: "dots.mocr", overall: 72.94, textEdit: 0.070, truncTextEdit: 0.300, cdm: 86.03, teds: 81.94, truncTeds: 62.21, figF1: 67.85, readOrder: 0.113, headTeds: 33.70 },
+  { group: "End-to-End Specialized VLMs", name: "Qianfan-OCR", overall: 71.89, textEdit: 0.095, truncTextEdit: 0.467, cdm: 88.74, teds: 83.18, truncTeds: 62.46, figF1: 58.44, readOrder: 0.110, headTeds: 49.48 },
+  { group: "End-to-End Specialized VLMs", name: "FireRed-OCR", overall: 69.29, textEdit: 0.042, truncTextEdit: 0.179, cdm: 89.68, teds: 81.88, truncTeds: 62.63, figF1: 0.00, readOrder: 0.087, headTeds: 50.84 },
+  { group: "End-to-End Specialized VLMs", name: "OCRVerse", overall: 64.47, textEdit: 0.104, truncTextEdit: 0.293, cdm: 86.89, teds: 84.14, truncTeds: 63.99, figF1: 0.00, readOrder: 0.152, headTeds: 35.63 },
+
+  { group: "General VLMs", name: "Qwen3-VL-235B", overall: 74.00, textEdit: 0.088, truncTextEdit: 0.187, cdm: 84.71, teds: 81.64, truncTeds: 61.28, figF1: 63.20, readOrder: 0.138, headTeds: 42.41 },
+  { group: "General VLMs", name: "Qwen3.6-plus", overall: 71.95, textEdit: 0.095, truncTextEdit: 0.260, cdm: 88.77, teds: 83.33, truncTeds: 60.53, figF1: 64.77, readOrder: 0.182, headTeds: 31.94 },
+  { group: "General VLMs", name: "Gemini-3.1-pro-preview", overall: 71.94, textEdit: 0.070, truncTextEdit: 0.223, cdm: 88.37, teds: 81.99, truncTeds: 61.30, figF1: 58.93, readOrder: 0.127, headTeds: 26.90 },
+  { group: "General VLMs", name: "ChatGPT-5.2-2025-12-11", overall: 65.47, textEdit: 0.111, truncTextEdit: 0.387, cdm: 84.33, teds: 79.31, truncTeds: 58.85, figF1: 30.90, readOrder: 0.170, headTeds: 37.23 },
+  { group: "General VLMs", name: "InternVL-3.5-38B", overall: 57.18, textEdit: 0.131, truncTextEdit: 0.502, cdm: 84.30, teds: 69.93, truncTeds: 51.63, figF1: 8.02, readOrder: 0.198, headTeds: 26.78 },
+];
+
+const columns = [
+  { key: "rank", label: "#", sortable: false },
+  { key: "name", label: "Model", sortable: true },
+  { key: "overall", label: "Overall", sortable: true, bar: true, barMax: 100 },
+  { key: "textEdit", label: "Text Acc.", sortable: true, bar: true, barMax: 100, inverted: true },
+  { key: "truncTextEdit", label: "Trunc. Text Acc.", sortable: true, bar: true, barMax: 100, inverted: true },
+  { key: "cdm", label: "Formula CDM", sortable: true, bar: true, barMax: 100 },
+  { key: "teds", label: "Table TEDS", sortable: true, bar: true, barMax: 100 },
+  { key: "truncTeds", label: "Trunc. Table TEDS", sortable: true, bar: true, barMax: 100 },
+  { key: "figF1", label: "Figure F1", sortable: true, bar: true, barMax: 100 },
+  { key: "readOrder", label: "Read Order Acc.", sortable: true, bar: true, barMax: 100, inverted: true },
+  { key: "headTeds", label: "Heading TEDS", sortable: true, bar: true, barMax: 100 },
+];
+
+const groups = ["All", "Pipeline-based Specialized VLMs", "End-to-End Specialized VLMs", "General VLMs"];
+const groupShort = { "All": "All", "Pipeline-based Specialized VLMs": "Pipeline VLMs", "End-to-End Specialized VLMs": "End-to-End VLMs", "General VLMs": "General VLMs" };
+
+// inverted cols: display value = 100*(1-raw), sort by display value descending (higher=better)
+const invertedCols = ["textEdit", "truncTextEdit", "readOrder"];
+
+// Compute display value for a model field
+function displayVal(m, key) {
+  const raw = m[key];
+  return invertedCols.includes(key) ? 100 * (1 - raw) : raw;
+}
+
+const bestValues = {};
+columns.forEach(c => {
+  if (!c.sortable || c.key === "name") return;
+  bestValues[c.key] = Math.max(...models.map(m => displayVal(m, c.key)));
+});
+
+let currentGroup = "All";
+let sortKey = "overall";
+let sortAsc = false; // default descending
+
+function renderFilters() {
+  const el = document.getElementById("filters");
+  el.innerHTML = groups.map(g =>
+    `<button class="filter-btn${g === currentGroup ? ' active' : ''}" onclick="setGroup('${g}')">${groupShort[g]}</button>`
+  ).join('');
+}
+
+function setGroup(g) {
+  currentGroup = g;
+  renderFilters();
+  renderTable();
+}
+
+function getFilteredModels() {
+  let list = currentGroup === "All" ? [...models] : models.filter(m => m.group === currentGroup);
+  list.sort((a, b) => {
+    if (sortKey === "name") {
+      return sortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+    }
+    const av = displayVal(a, sortKey), bv = displayVal(b, sortKey);
+    return sortAsc ? av - bv : bv - av;
+  });
+  return list;
+}
+
+function renderTable() {
+  const thead = document.getElementById("thead");
+  const tbody = document.getElementById("tbody");
+
+  // Header
+  thead.innerHTML = "<tr>" + columns.map(c => {
+    const isSorted = c.key === sortKey;
+    const arrow = c.sortable ? `<span class="sort-arrow">${isSorted ? (sortAsc ? '&#9650;' : '&#9660;') : '&#9650;&#9660;'}</span>` : '';
+    const sortedClass = isSorted ? ' sorted' : '';
+    return `<th class="${sortedClass}" onclick="${c.sortable ? `sortBy('${c.key}')` : ''}">${c.label}${arrow}</th>`;
+  }).join("") + "</tr>";
+
+  // Body
+  const list = getFilteredModels();
+  let html = "";
+  let rank = 1;
+  const showGroups = currentGroup !== "All";
+  let lastGroup = "";
+
+  list.forEach((m) => {
+    if (showGroups && m.group !== lastGroup) {
+      html += `<tr class="group-row"><td colspan="${columns.length}">${m.group}</td></tr>`;
+      lastGroup = m.group;
+      rank = 1;
+    }
+
+    const rankClass = rank <= 3 ? ' top3' : '';
+    const overallClass = m.overall === bestValues.overall ? ' top1' : '';
+
+    html += "<tr>";
+    columns.forEach(c => {
+      if (c.key === "rank") {
+        html += `<td class="rank-cell${rankClass}">${rank}</td>`;
+      } else if (c.key === "name") {
+        html += `<td class="model-name">${m.name}</td>`;
+      } else if (c.key === "overall") {
+        const opct = Math.max(0, Math.min(100, m.overall));
+        const ofill = m.overall === bestValues.overall ? ' top' : '';
+        html += `<td class="overall-cell bar-cell${overallClass}">${m.overall.toFixed(2)}<div class="bar-container"><div class="bar-fill${ofill}" style="width:${opct.toFixed(1)}%"></div></div></td>`;
+      } else if (c.bar) {
+        const dval = displayVal(m, c.key);
+        const pct = Math.max(0, Math.min(100, dval));
+        const isBest = Math.abs(dval - bestValues[c.key]) < 0.001;
+        const fillClass = isBest ? ' top' : '';
+        html += `<td class="bar-cell${isBest ? ' best' : ''}">${dval.toFixed(2)}<div class="bar-container"><div class="bar-fill${fillClass}" style="width:${pct.toFixed(1)}%"></div></div></td>`;
+      }
+    });
+    html += "</tr>";
+    rank++;
+  });
+
+  tbody.innerHTML = html;
+}
+
+function sortBy(key) {
+  if (sortKey === key) {
+    sortAsc = !sortAsc;
+  } else {
+    sortKey = key;
+    sortAsc = false; // default: best (highest display value) first
+  }
+  renderTable();
+}
+
+// Init
+renderFilters();
+renderTable();
+</script>
+</body>
+</html>
