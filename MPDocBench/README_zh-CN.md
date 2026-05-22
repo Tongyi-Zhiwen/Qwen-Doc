@@ -4,7 +4,7 @@
 
 多页文档解析的实用评测基准
 
-[![arXiv](https://img.shields.io/badge/arXiv-2605.03904-b31b1b.svg)](https://arxiv.org/abs/2605.03903) [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717.svg)](https://github.com/Tongyi-Zhiwen/Qwen-Doc) [![ModelScope](https://img.shields.io/badge/ModelScope-Dataset-624AFF.svg)](https://www.modelscope.cn/datasets/zhoubb/MPDocBench) [![Leaderboard](https://img.shields.io/badge/Leaderboard-MPDocBench-FF6F00.svg)](https://bang123-box.github.io/MPDocBench-Parsing-Leaderboard/) [![License](https://img.shields.io/badge/License-Apache_2.0-4CAF50.svg)](LICENSE)
+[![arXiv](https://img.shields.io/badge/arXiv-2605.22100-b31b1b.svg)](https://arxiv.org/pdf/2605.22100) [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717.svg)](https://github.com/Tongyi-Zhiwen/Qwen-Doc) [![ModelScope](https://img.shields.io/badge/ModelScope-Dataset-624AFF.svg)](https://www.modelscope.cn/datasets/zhoubb/MPDocBench) [![Leaderboard](https://img.shields.io/badge/Leaderboard-MPDocBench-FF6F00.svg)](https://bang123-box.github.io/MPDocBench-Parsing-Leaderboard/) [![License](https://img.shields.io/badge/License-Apache_2.0-4CAF50.svg)](LICENSE)
 
 **MPDocBench-Parse** 是面向 **多页文档解析实战场景** 打造的综合评测基准与工具包。区别于以往的单页评测，它在 **覆盖中英双语、横跨 15 个领域的 420 篇真实 PDF 文档（包含 3135 张图像）** 上对解析系统进行 **端到端的整篇文档评测**。除了传统的元素级保真度（文本、公式、表格），MPDocBench-Parse 独特地考察另外几个在实际部署中至关重要、却长期被忽视的能力：**语义连续性**——跨页或跨版面截断的文本与表格能否被正确拼接还原；**图像抽取**——文档中的图像信息能否被准确地抽取出来；以及 **文档级逻辑结构**——阅读顺序与标题层级。上述维度共同构成了一套完备且统一的评测体系，为通用 VLM 与专业解析模型提供一份全面的衡量标尺。
 
