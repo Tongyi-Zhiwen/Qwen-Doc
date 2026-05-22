@@ -6,7 +6,7 @@ Benchmarking Practical Multi-page Document Parsing
 
 [![arXiv](https://img.shields.io/badge/arXiv-2605.03904-b31b1b.svg)](https://arxiv.org/abs/2605.03903) [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717.svg)](https://github.com/Tongyi-Zhiwen/Qwen-Doc) [![ModelScope](https://img.shields.io/badge/ModelScope-Dataset-624AFF.svg)](https://www.modelscope.cn/datasets/zhoubb/MPDocBench) [![Leaderboard](https://img.shields.io/badge/Leaderboard-MPDocBench-FF6F00.svg)](https://bang123-box.github.io/MPDocBench-Parsing-Leaderboard/) [![License](https://img.shields.io/badge/License-Apache_2.0-4CAF50.svg)](LICENSE)
 
-**MPDocBench-Parse** is a comprehensive evaluation toolkit for multi-page document parsing. It provides a unified framework to assess the quality of document parsing systems across multiple dimensions including text extraction, table recognition, formula recognition, document structure, and multi-modal information grounding.
+**MPDocBench-Parse** is a comprehensive benchmark and evaluation toolkit purpose-built for **practical multi-page document parsing**. Unlike prior page-level benchmarks, it stress-tests parsing systems **end-to-end on multi-page documents** — drawing on **420 real-world PDFs (containing 3135 images) spanning 15 domains in both Chinese and English**. Beyond conventional element-level fidelity (text, formulas, tables), MPDocBench-Parse uniquely evaluates several capabilities that are critical in production yet largely overlooked by existing benchmarks: **semantic continuity** — faithfully merging text and tables truncated across page boundaries or layout; **figure extraction** — accurately recovering visual information embedded in documents; and **document-level logical structure**, including reading order and hierarchical headings. Together, these dimensions form a complete and unified evaluation suite, offering a holistic yardstick for both general-purpose VLMs and specialized parsing models.
 
 > **Note on the open-sourced dataset.** As described in the original paper, the benchmark contains a total of **433 documents**. After an internal compliance review, **13 documents** involving copyright, safety, or politically sensitive concerns are removed. As a result, the publicly released version of the dataset contains **420 PDF documents**.
 
@@ -178,5 +178,14 @@ If any content in this benchmark raises copyright concerns, please reach out to 
 If you find MPDocBench-Parse useful in your research, please consider citing our paper:
 
 ```bibtex
+@misc{zhou2026mpdocbenchparsebenchmarkingpracticalmultipage,
+      title={MPDocBench-Parse: Benchmarking Practical Multi-page Document Parsing}, 
+      author={Bangbang Zhou and Hangdi Xing and Yifan Chen and Jianjun Xu and Qi Zheng and Feiyu Gao and Zhibo Yang and Shuai Bai and Ming Yan and Jieping Ye and Hongtao Xie},
+      year={2026},
+      eprint={2605.22100},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2605.22100}, 
+}
 ```
 

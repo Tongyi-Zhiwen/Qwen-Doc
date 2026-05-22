@@ -81,4 +81,16 @@ If you find our work helpful in your research, please consider citing our papers
     year={2025}
 }
 ```
+```bibtex
+@misc{zhou2026mpdocbenchparsebenchmarkingpracticalmultipage,
+      title={MPDocBench-Parse: Benchmarking Practical Multi-page Document Parsing}, 
+      author={Bangbang Zhou and Hangdi Xing and Yifan Chen and Jianjun Xu and Qi Zheng and Feiyu Gao and Zhibo Yang and Shuai Bai and Ming Yan and Jieping Ye and Hongtao Xie},
+      year={2026},
+      eprint={2605.22100},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2605.22100}, 
+}
+```
+
 
