@@ -704,7 +704,7 @@ class End2EndDataset():
                 merged_html_table_match_s = [x for x in merged_html_table_match_s if x['gt_idx'] != [""]]  # Remove extra preds
 
             elif latex_table_len > html_table_len:
-                latex_table_match_s, _ = match_gt2pred_simple(gt_table, pred_dataset['latex_table'], 'latex_table', img_name) # Don't consider truncated merging for tables
+                latex_table_match_s, unmatch_table_pred = match_gt2pred_simple(gt_table, pred_dataset['latex_table'], 'latex_table', img_name) # Don't consider truncated merging for tables
                 latex_table_match_s = [x for x in latex_table_match_s if x['gt_idx'] != [""]]  # Remove extra preds 
 
                 merged_latex_table_match_s, _ = match_gt2pred_simple(merged_gt_table, pred_dataset['latex_table'], 'latex_table', img_name) # Don't consider truncated merging for tables
