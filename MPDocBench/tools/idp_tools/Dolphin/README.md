@@ -223,4 +223,4 @@ If you find this code useful for your research, please use the following BibTeX 
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=bytedance/Dolphin&type=Date)](https://www.star-history.com/#bytedance/Dolphin&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=bytedance/Dolphin&type=Date)](https://star-history.dera.page/#bytedance/Dolphin&Date)

@@ -349,4 +349,4 @@ If you find this work is relevant with your research or applications, please fee
 
 ## ⭐️ Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Tongyi-Zhiwen/QwenLong-L1&type=Timeline)](https://star-history.com/#Tongyi-Zhiwen/QwenLong-L1&Timeline)
+[![Star History Chart](https://star-history.dera.page/svg?repos=Tongyi-Zhiwen/QwenLong-L1&type=Timeline)](https://star-history.dera.page/#Tongyi-Zhiwen/QwenLong-L1&Timeline)

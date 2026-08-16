@@ -49,7 +49,7 @@ This repository currently includes the following projects:
 
 ## ⭐ Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Tongyi-Zhiwen/Qwen-Doc&type=Timeline)](https://star-history.com/#Tongyi-Zhiwen/Qwen-Doc&Timeline)
+[![Star History Chart](https://star-history.dera.page/svg?repos=Tongyi-Zhiwen/Qwen-Doc&type=Timeline)](https://star-history.dera.page/#Tongyi-Zhiwen/Qwen-Doc&Timeline)
 
 ## 📝 Citation
 
