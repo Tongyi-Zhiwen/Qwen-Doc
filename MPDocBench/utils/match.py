@@ -143,20 +143,22 @@ def get_gt_pred_lines(gt_mix,pred_dataset_mix,line_type):
         gt_cat_list_c = []
 
     # pred's empty values
-    filtered_lists = [(a, b) for a, b in zip(pred_lines, norm_pred_lines) if a and b]
+    filtered_lists = [(line, norm_line, item) for line, norm_line, item in zip(pred_lines, norm_pred_lines, pred_dataset_mix) if line and norm_line]
 
-    # decompress to two lists
+    # decompress to three lists
     if filtered_lists:
-        pred_lines_c, norm_pred_lines_c = zip(*filtered_lists)
+        pred_lines_c, norm_pred_lines_c, pred_items_c = zip(*filtered_lists)
 
         # convert to lists
         pred_lines_c = list(pred_lines_c)
         norm_pred_lines_c = list(norm_pred_lines_c)
+        pred_items_c = list(pred_items_c)
     else:
         pred_lines_c = []
         norm_pred_lines_c = []
+        pred_items_c = []
 
-    return gt_lines_c, norm_gt_lines_c, gt_cat_list_c, pred_lines_c, norm_pred_lines_c, gt_mix, pred_dataset_mix
+    return gt_lines_c, norm_gt_lines_c, gt_cat_list_c, pred_lines_c, norm_pred_lines_c, gt_mix, pred_items_c
 
 
 def match_gt2pred_simple(gt_items, pred_items, line_type, img_name):
