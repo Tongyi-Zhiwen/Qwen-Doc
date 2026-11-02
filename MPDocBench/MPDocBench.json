@@ -269944,7 +269944,7 @@
         "page_id": 9,
         "block_fenduan": "",
         "block_bbox_type": "BBOX",
-        "html": "<table><tr><td></td><td>截至六月三十日止六個月<br/>                二零二五年      二零二四年<br/><i>千香港元</i><i>千香港元</i><br/><i>(未經審核)</i><i>(未經審核)</i></td></tr><tr><td>現金及現金等價物增加/(減少)淨額</td><td>2,158              (86)</td></tr><tr><td>於一月一日之現金及現金等價物</td><td>24,314          20,879</td></tr><tr><td>匯率變動之影響</td><td><hr/>                –                  –</td></tr><tr><td>於六月三十日之現金及現金等價物 (附註)</td><td><hr/>                26,472          20,793                <hr/><hr/></td></tr></table>"
+        "html": "<table><tr><td rowspan=\"2\"></td><td colspan=\"2\">截至六月三十日止六個月</td></tr><tr><td>二零二五年<br/>千港元<br/>(未經審核)</td><td>二零二四年<br/>千港元<br/>(未經審核)</td></tr><tr><td>現金及現金等價物增加/(減少)淨額</td><td>2,158</td><td>(86)</td></tr><tr><td>於一月一日之現金及現金等價物</td><td>24,314</td><td>20,879</td></tr><tr><td>匯率變動之影響</td><td>–</td><td>–</td></tr><tr><td>於六月三十日之現金及現金等價物 (附註)</td><td>26,472</td><td>20,793</td></tr></table>"
       },
       {
         "label": "标题",
